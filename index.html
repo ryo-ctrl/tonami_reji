@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>簡易レジアプリ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <style>
+    body { font-family: sans-serif; padding: 10px; margin: 0; }
+    h1 { text-align: center; font-size: 1.5rem; margin: 10px 0; }
+
+    .tabs { display: flex; margin-bottom: 10px; }
+    .tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: #eee;
+      font-size: 1.1rem;
+    }
+    .tab.active { background: #ddd; font-weight: bold; }
+
+    .menu { display: none; grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
+    .menu.active { display: grid; }
+    @media (min-width: 600px) { .menu { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 900px) { .menu { grid-template-columns: repeat(3, 1fr); } }
+
+    button {
+      padding: 15px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      width: 100%;
+      text-align: left;
+    }
+    button:active { background: #ddd; }
+
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: center; font-size: 1rem; }
+
+    #total { font-size: 1.6rem; font-weight: bold; text-align: right; margin: 15px 0; }
+
+    .qty-btn {
+      width: auto;
+      margin: 0 8px;
+      font-size: 1.4rem;
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid #888;
+      background: #eee;
+    }
+
+    .action-btn {
+      width: 48%;
+      padding: 15px;
+      font-size: 1.2rem;
+      border-radius: 8px;
+      margin: 5px 1%;
+      cursor: pointer;
+      border: none;
+      color: #fff;
+    }
+    .reset-btn { background: #f44336; }
+    .checkout-btn { background: #4CAF50; }
+
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .popup-content h3 { margin-top: 0; }
+    .popup-content label { display: block; margin: 10px 0; font-size: 1.1rem; cursor: pointer; }
+    .popup-buttons { margin-top: 20px; }
+    .popup-buttons button { width: 45%; padding: 10px; margin: 0 5px; font-size: 1rem; }
+
+    .custom-input { margin: 20px 0; }
+    .custom-input input { padding: 10px; margin: 5px; font-size: 1rem; }
+    .custom-input button { width: auto; background: #2196F3; color: white; }
+  </style>
+</head>
+<body>
+  <h1>簡易レジアプリ</h1>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showMenu('food')">フード</div>
+    <div class="tab" onclick="showMenu('drink')">ドリンク</div>
+  </div>
+
+  <div id="food" class="menu active">
+    <button onclick="addItem('セロリの浅漬け',450)">セロリの浅漬け ¥450</button>
+    <button onclick="addItem('トマト酢',480)">トマト酢 ¥480</button>
+    <button onclick="addItem('板わさ',580)">板わさ ¥580</button>
+    <button onclick="addItem('明太子炙り',600)">明太子炙り ¥600</button>
+    <button onclick="addItem('そぼろクリームチーズ',650)">そぼろクリームチーズ ¥650</button>
+    <button onclick="addItem('サラダ',780)">サラダ ¥780</button>
+    <button onclick="addItem('梅干しキムチ',450)">梅干しキムチ ¥450</button>
+    <button onclick="addItem('ちくわきゅーり',550)">ちくわきゅーり ¥550</button>
+    <button onclick="addItem('大人のポテチ',450)">大人のポテチ ¥450</button>
+    <button onclick="addItem('かまぼこバター',680)">かまぼこバター ¥680</button>
+    <button onclick="addItem('グラタン',800)">グラタン ¥800</button>
+    <button onclick="addItem('チキン南蛮',700)">チキン南蛮 ¥700</button>
+    <button onclick="addItem('鶏天',680)">鶏天 ¥680</button>
+    <button onclick="addItem('タコスピーマン',600)">タコスピーマン ¥600</button>
+    <button onclick="addItem('ポークジンジャー',880)">ポークジンジャー ¥880</button>
+    <button onclick="addItem('牛ハツ',850)">牛ハツ ¥850</button>
+    <button onclick="addItem('つくね',700)">つくね ¥700</button>
+    <button onclick="addItem('石原牛',1980)">石原牛 ¥1,980</button>
+    <button onclick="addItem('明太バターご飯',600)">明太バターご飯 ¥600</button>
+    <button onclick="addItem('カレー',900)">カレー ¥900</button>
+    <button onclick="addItem('沖縄そば',780)">沖縄そば ¥780</button>
+    <button onclick="addItem('味噌汁',400)">味噌汁 ¥400</button>
+    <button onclick="addItem('お通し',330)">お通し ¥330</button>
+  </div>
+
+  <div id="drink" class="menu">
+    <button onclick="addItem('生ビール',600)">生ビール ¥600</button>
+    <button onclick="addItem('瓶ビール',680)">瓶ビール ¥680</button>
+    <button onclick="addItem('ノンアルコールビール',420)">ノンアルコールビール ¥420</button>
+    <button onclick="addItem('角ハイ',580)">角ハイ ¥580</button>
+    <button onclick="addItem('知多ハイ',880)">知多ハイ ¥880</button>
+    <button onclick="addItem('プレーンサワー',450)">プレーンサワー ¥450</button>
+    <button onclick="addItem('カルピスサワー',450)">カルピスサワー ¥450</button>
+    <button onclick="addItem('ポン酢サワー',450)">ポン酢サワー ¥450</button>
+    <button onclick="addItem('生レモンサワー',600)">生レモンサワー ¥600</button>
+    <button onclick="addItem('金魚サワー',650)">金魚サワー ¥650</button>
+    <button onclick="addItem('梅干しレモンサワー',650)">梅干しレモンサワー ¥650</button>
+    <button onclick="addItem('アイスの実サワー',650)">アイスの実サワー ¥650</button>
+    <button onclick="addItem('季節の生絞りサワー',650)">季節の生絞りサワー ¥650</button>
+    <button onclick="addItem('中おか',400)">中おか ¥400</button>
+    <button onclick="addItem('トマトサワー',650)">トマトサワー ¥650</button>
+    <button onclick="addDrinkWithMethod('トロトロ梅酒', 650)">トロトロ梅酒 ¥650</button>
+    <button onclick="addDrinkWithMethod('バナナ梅酒', 650)">バナナ梅酒 ¥650</button>
+    <button onclick="addDrinkWithMethod('黒霧島', 420)">黒霧島 ¥420</button>
+    <button onclick="addDrinkWithMethod('白霧島', 420)">白霧島 ¥420</button>
+    <button onclick="addDrinkWithMethod('三岳', 580)">三岳 ¥580</button>
+    <button onclick="addDrinkWithMethod('だいやめ', 420)">だいやめ ¥420</button>
+    <button onclick="addDrinkWithMethod('二階堂', 550)">二階堂 ¥550</button>
+    <button onclick="addDrinkWithMethod('壱岐ゴールド', 420)">壱岐ゴールド ¥420</button>
+    <button onclick="addDrinkWithMethod('繁枡', 580)">繁枡 ¥580</button>
+    <button onclick="addDrinkWithMethod('白岳しろ', 420)">白岳しろ ¥420</button>
+    
+    <button onclick="addItem('ヨーコ',700)">ヨーコ ¥700</button>
+    <button onclick="addItem('ヨーコドライレモン',750)">ヨーコドライレモン ¥750</button>
+    <button onclick="addItem('BCセット',220)">BCセット ¥220</button>
+    <button onclick="addItem('ソーダ',150)">ソーダ ¥150</button>
+    <button onclick="addItem('フローデカーニャ',650)">フローデカーニャ ¥650</button>
+    <button onclick="addItem('エスプレッソ',700)">エスプレッソ ¥700</button>
+    <button onclick="addItem('ワインB',3750)">ワインB ¥3,750</button>
+    <button onclick="addItem('ソフトドリンク',300)">ソフトドリンク ¥300</button>
+    <button onclick="addItem('割り物',50)">割り物 ¥50</button>
+  </div>
+
+  <div class="custom-input">
+    <h2>黒板メニュー用</h2>
+    <input type="text" id="customName" placeholder="商品名を入力">
+    <input type="number" id="customPrice" placeholder="金額を入力">
+    <button onclick="addCustomOrder()">追加</button>
+  </div>
+
+  <h2>注文一覧</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>商品名</th>
+        <th>数量</th>
+        <th>小計</th>
+      </tr>
+    </thead>
+    <tbody id="orderList"></tbody>
+  </table>
+
+  <div id="total">合計: 0円</div>
+  <div>
+    <button class="action-btn reset-btn" onclick="resetOrder()">リセット</button>
+    <button class="action-btn checkout-btn" onclick="checkout()">会計</button>
+  </div>
+
+  <div id="methodPopup" class="popup-overlay">
+      <div class="popup-content">
+          <h3 id="popupTitle"></h3>
+          <form id="methodForm">
+              <label><input type="radio" name="method" value="ロック" checked> ロック</label>
+              <label><input type="radio" name="method" value="水割り"> 水割り</label>
+              <label><input type="radio" name="method" value="ソーダ"> ソーダ (+50円)</label>
+              <label><input type="radio" name="method" value="お湯割り"> お湯割り</label>
+              <label><input type="radio" name="method" value="2合"> 2合 (3倍価格)</label>
+          </form>
+          <div class="popup-buttons">
+              <button onclick="selectMethod()">決定</button>
+              <button onclick="closePopup()">キャンセル</button>
+          </div>
+      </div>
+  </div>
+
+  <script>
+    let total = 0;
+    let orders = {};
+    let currentDrink = {};
+
+    function addItem(name, price) {
+      if (orders[name]) {
+        orders[name].quantity += 1;
+        orders[name].subtotal = orders[name].quantity * orders[name].price;
+      } else {
+        orders[name] = { price: price, quantity: 1, subtotal: price };
+      }
+      total += price;
+      renderOrders();
+    }
+
+    function addCustomOrder() {
+      const name = document.getElementById("customName").value.trim();
+      const price = parseInt(document.getElementById("customPrice").value);
+      if (name && !isNaN(price)) {
+        addItem(name, price);
+        document.getElementById("customName").value = "";
+        document.getElementById("customPrice").value = "";
+      } else {
+        alert("商品名と金額を入力してください");
+      }
+    }
+
+    function addDrinkWithMethod(name, price) {
+        currentDrink = { name, price };
+        document.getElementById('popupTitle').textContent = `${name}の飲み方を選択してください`;
+        document.getElementById('methodPopup').style.display = 'flex';
+    }
+
+    function selectMethod() {
+        const selectedMethod = document.querySelector('input[name="method"]:checked').value;
+        let finalPrice = currentDrink.price;
+        let finalName = currentDrink.name;
+
+        if (selectedMethod === "ソーダ") {
+            finalPrice += 50;
+            finalName += "（ソーダ割り）";
+        } else if (selectedMethod === "2合") {
+            finalPrice *= 3;
+            finalName += "（2合）";
+        } else {
+            finalName += `（${selectedMethod}）`;
+        }
+
+        addItem(finalName, finalPrice);
+        closePopup();
+    }
+
+    function closePopup() {
+        document.getElementById('methodPopup').style.display = 'none';
+    }
+
+    function removeItem(name) {
+      if (orders[name]) {
+        total -= orders[name].price;
+        orders[name].quantity -= 1;
+        if (orders[name].quantity <= 0) delete orders[name];
+        else orders[name].subtotal = orders[name].quantity * orders[name].price;
+        renderOrders();
+      }
+    }
+
+    function renderOrders() {
+      const table = document.getElementById("orderList");
+      table.innerHTML = "";
+      for (let name in orders) {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${name}</td>
+          <td>
+            <button class="qty-btn" onclick="removeItem('${name}')">−</button>
+            ×${orders[name].quantity}
+            <button class="qty-btn" onclick="addItem('${name}', ${orders[name].price})">＋</button>
+          </td>
+          <td>${orders[name].subtotal}円</td>
+        `;
+        table.appendChild(row);
+      }
+      document.getElementById("total").textContent = "合計: " + total + "円";
+    }
+
+    function resetOrder() { orders = {}; total = 0; renderOrders(); }
+
+    function checkout() {
+      if (total === 0) { alert("注文がありません。"); return; }
+      let payment = prompt("お預かり金額を入力してください（円）:");
+      if (payment === null) return;
+      payment = parseInt(payment);
+      if (isNaN(payment) || payment < total) { alert("金額が不足しています。"); return; }
+      let change = payment - total;
+      alert(`お会計: ${total}円\nお預かり: ${payment}円\nお釣り: ${change}円\nありがとうございました！`);
+      resetOrder();
+    }
+
+    function showMenu(menuId) {
+      document.querySelectorAll(".menu").forEach(menu => menu.classList.remove("active"));
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+      document.getElementById(menuId).classList.add("active");
+      document.querySelector(`.tab[onclick="showMenu('${menuId}')"]`).classList.add("active");
+      closePopup();
+    }
+  </script>
+</body>
+</html>
