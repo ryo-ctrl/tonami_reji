@@ -105,13 +105,13 @@
     <button onclick="addItem('トマト酢',480)">トマト酢 ¥480</button>
     <button onclick="addItem('板わさ',580)">板わさ ¥580</button>
     <button onclick="addItem('明太子炙り',600)">明太子炙り ¥600</button>
-    <button onclick="addItem('そぼろクリームチーズ',650)">そぼろクリームチーズ ¥650</button>
+    <button onclick="addItem('そぼろクリームチーズ',600)">そぼろクリームチーズ ¥600</button>
     <button onclick="addItem('サラダ',780)">サラダ ¥780</button>
     <button onclick="addItem('梅干しキムチ',450)">梅干しキムチ ¥450</button>
     <button onclick="addItem('ちくわきゅーり',550)">ちくわきゅーり ¥550</button>
     <button onclick="addItem('大人のポテチ',450)">大人のポテチ ¥450</button>
     <button onclick="addItem('かまぼこバター',680)">かまぼこバター ¥680</button>
-    <button onclick="addItem('グラタン',800)">グラタン ¥800</button>
+    <button onclick="addItem('グラタン',850)">グラタン ¥850</button>
     <button onclick="addItem('チキン南蛮',700)">チキン南蛮 ¥700</button>
     <button onclick="addItem('鶏天',680)">鶏天 ¥680</button>
     <button onclick="addItem('タコスピーマン',600)">タコスピーマン ¥600</button>
@@ -136,7 +136,7 @@
     <button onclick="addItem('カルピスサワー',450)">カルピスサワー ¥450</button>
     <button onclick="addItem('ポン酢サワー',450)">ポン酢サワー ¥450</button>
     <button onclick="addItem('生レモンサワー',600)">生レモンサワー ¥600</button>
-    <button onclick="addItem('金魚サワー',650)">金魚サワー ¥650</button>
+    <button onclick="addItem('金魚サワー',600)">金魚サワー ¥600</button>
     <button onclick="addItem('梅干しレモンサワー',650)">梅干しレモンサワー ¥650</button>
     <button onclick="addItem('アイスの実サワー',650)">アイスの実サワー ¥650</button>
     <button onclick="addItem('季節の生絞りサワー',650)">季節の生絞りサワー ¥650</button>
@@ -147,9 +147,9 @@
     <button onclick="addDrinkWithMethod('黒霧島', 420)">黒霧島 ¥420</button>
     <button onclick="addDrinkWithMethod('白霧島', 420)">白霧島 ¥420</button>
     <button onclick="addDrinkWithMethod('三岳', 580)">三岳 ¥580</button>
-    <button onclick="addDrinkWithMethod('だいやめ', 420)">だいやめ ¥420</button>
-    <button onclick="addDrinkWithMethod('二階堂', 550)">二階堂 ¥550</button>
-    <button onclick="addDrinkWithMethod('壱岐ゴールド', 420)">壱岐ゴールド ¥420</button>
+    <button onclick="addDrinkWithMethod('だいやめ', 580)">だいやめ ¥580</button>
+    <button onclick="addDrinkWithMethod('二階堂', 420)">二階堂 ¥420</button>
+    <button onclick="addDrinkWithMethod('壱岐ゴールド', 550)">壱岐ゴールド ¥550</button>
     <button onclick="addDrinkWithMethod('繁枡', 580)">繁枡 ¥580</button>
     <button onclick="addDrinkWithMethod('白岳しろ', 420)">白岳しろ ¥420</button>
     
@@ -158,7 +158,7 @@
     <button onclick="addItem('BCセット',220)">BCセット ¥220</button>
     <button onclick="addItem('ソーダ',150)">ソーダ ¥150</button>
     <button onclick="addItem('フローデカーニャ',650)">フローデカーニャ ¥650</button>
-    <button onclick="addItem('エスプレッソ',700)">エスプレッソ ¥700</button>
+    <button onclick="addItem('エスプレッソ',680)">エスプレッソ ¥680</button>
     <button onclick="addItem('ワインB',3750)">ワインB ¥3,750</button>
     <button onclick="addItem('ソフトドリンク',300)">ソフトドリンク ¥300</button>
     <button onclick="addItem('割り物',50)">割り物 ¥50</button>
@@ -301,7 +301,7 @@
       payment = parseInt(payment);
       if (isNaN(payment) || payment < total) { alert("金額が不足しています。"); return; }
       let change = payment - total;
-      alert(`お会計: ${total}円\nお預かり: ${payment}円\nお釣り: ${change}円\nありがとうございました！`);
+      alert(`お会計: ${total}円\nお預かり: ${payment}円\nお釣り: ${change}円\n`);
       resetOrder();
     }
 
@@ -315,4 +315,5 @@
   </script>
 </body>
 </html>
+
 
